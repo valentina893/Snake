@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        ".fantomasignore": "ignore",
+        "random.h": "c",
+        "renderer.h": "c"
+    }
+}

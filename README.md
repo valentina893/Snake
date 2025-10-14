@@ -1,6 +1,11 @@
 # Snake_Game
 
-Note: This is an early prototype. Collision detection with walls or the snake’s body has not yet been implemented — the only interactions currently handled are with apples.
+Note: This is an early prototype. Apples can sometimes spawn on top of the snake. Might fix later if I am motivated enough.
+
+Controls:
+- WASD/Arrow Keys: changing direction of snake.
+- R: restarting the game.
+- ESC: quitting the game.
 
 sdl2 is a required dependency
 

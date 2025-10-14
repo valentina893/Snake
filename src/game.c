@@ -44,14 +44,9 @@ void game_run(game* game) {
 
     if (game == NULL) return;
 
-    Uint32 last_move_time = SDL_GetTicks();  // record initial time
+    Uint32 last_move_time = SDL_GetTicks();
 
     while (game->running) {
-        // input_read()
-        // game_update()
-        // game_draw_frame()
-
-
         input_read(&game->input, &game->running);
         game_update(game, &last_move_time);
         game_draw_frame(game);
@@ -70,8 +65,58 @@ void game_delete(game* game) {
 
 }
 
-void game_restart(game* game) {
+void game_update(game* game, Uint32* last_move_time) {
 
+    if (game == NULL || last_move_time == NULL) return;
+
+    Uint32 now = SDL_GetTicks();
+
+    if (now - *last_move_time >= game->move_interval) {
+        game_detect_collisions(game);
+        *last_move_time = now;
+    }
+
+    if (game->input.restart) game_restart(game);
+
+    return;
+
+}
+
+void game_detect_collisions(game* game) {
+
+    if (game == NULL) return;
+
+    // check for wall collisions
+    if (game->snake.head->x >= game->grid_width || game->snake.head->x < 0) {
+        game->running = 0;
+    }
+    if (game->snake.head->y >= game->grid_height || game->snake.head->y < 0) {
+        game->running = 0;
+    }
+
+    // check for snake_node collisions
+    struct snake_node* curr = game->snake.head->next;
+    while (curr != NULL) {
+        if (game->snake.head->x == curr->x && game->snake.head->y == curr->y) {
+            game->running = 0;
+            break;
+        }
+        curr = curr->next;
+    }
+
+    // check for apple collisions
+    if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
+        snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 1);
+        game->apple_x = rand_int(0, game->grid_width - 1);
+        game->apple_y = rand_int(0, game->grid_height - 1);
+    } else {
+        snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 0);
+    }
+
+}
+
+void game_restart(game* game) {
+    
     if (game == NULL) return;
 
     snake_delete(&game->snake);
@@ -87,26 +132,6 @@ void game_restart(game* game) {
 
 }
 
-void game_update(game* game, Uint32* last_move_time) {
-
-    if (game == NULL) return;
-
-    Uint32 now = SDL_GetTicks();
-    if (now - *last_move_time >= game->move_interval) {
-        if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
-            snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 1);
-            game->apple_x = rand_int(0, game->grid_width - 1);
-            game->apple_y = rand_int(0, game->grid_height - 1);
-        } else {
-            snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 0);
-        }
-        *last_move_time = now;
-    }
-
-    if (game->input.restart) game_restart(game);
-
-}
-
 void game_draw_frame(game* game) {
 
     if (game == NULL) return;
@@ -119,9 +144,16 @@ void game_draw_frame(game* game) {
     // draw snake
     struct snake_node* curr = game->snake.head;
 
-    while (curr != NULL) {
-        renderer_drawRect(&game->renderer, curr->x * square_x, curr->y  * square_y, square_x - 2, square_y - 2, 0, 255, 0, 0);
-        curr = curr->next;
+    if (game->running) {
+        while (curr != NULL) {
+            renderer_drawRect(&game->renderer, curr->x * square_x, curr->y  * square_y, square_x - 2, square_y - 2, 0, 255, 0, 0);
+            curr = curr->next;
+        }
+    } else {
+        while (curr != NULL) {
+            renderer_drawRect(&game->renderer, curr->x * square_x, curr->y  * square_y, square_x - 2, square_y - 2, 50, 50, 50, 0);
+            curr = curr->next;
+        }
     }
 
     // draw apple
@@ -130,22 +162,5 @@ void game_draw_frame(game* game) {
     renderer_present(&game->renderer);
 
     return;
-
-}
-
-void test_draw_grid(game* game) {
-
-    int square_x = game->window_width / game->grid_width;
-    int square_y = game->window_height / game->grid_height;
-
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
-
-    for (int i = 0; i < game->grid_width; i++) {
-        for (int j = 0; j < game->grid_height; j++) {
-            renderer_drawRect(&game->renderer, i * square_x, j  * square_y, square_x - 2, square_y - 2, 0, 255, 0, 0);
-        }
-    }
-
-    renderer_present(&game->renderer);
 
 }

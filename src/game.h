@@ -50,20 +50,23 @@ Cleans up game engine class, called in main before exiting program.
 void game_delete(game* game);
 
 /*
-Helper function for resetting game engine class by reinitializing snake and apple.
-*/
-void game_restart(game* game);
-
-/*
 Helper function for updating all elements of the game after user input has been recorded.
 */
 void game_update(game* game, Uint32* last_move_time);
 
 /*
+Helper function that checks for snake collisions with walls, snake body, or apple.
+*/
+void game_detect_collisions(game* game);
+
+/*
+Helper function for resetting game engine class by reinitializing snake and apple.
+*/
+void game_restart(game* game);
+
+/*
 Helper function for drawing the snake and apple on screen.
 */
 void game_draw_frame(game* game);
-
-void test_draw_grid(game* game);
 
 #endif

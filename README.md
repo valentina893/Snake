@@ -2,7 +2,7 @@
 
 Note: This is an early prototype. Apples can sometimes spawn on top of the snake. The program also closes automatically if a collision is detected.
 
-Some changes I am contemplating making can be found in the [todo.md](docs/todo.md) file.
+Future changes to be made can be found in the [todo.md](docs/todo.md) file.
 
 Controls:
 - WASD/Arrow Keys: changing direction of snake.

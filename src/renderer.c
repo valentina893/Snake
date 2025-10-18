@@ -16,6 +16,8 @@ int renderer_create(renderer* renderer, char* window_title, int window_width, in
         window_width, window_height, SDL_WINDOW_SHOWN
     );
 
+    SDL_RaiseWindow(renderer->window); // for mac
+
     if (renderer->window == NULL) {
         printf("Error creating SDL_Window*: %s\n", SDL_GetError());
         SDL_Quit();

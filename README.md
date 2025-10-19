@@ -1,6 +1,6 @@
 # Snake_Game
 
-Note: This is an early prototype. Apples can sometimes spawn on top of the snake. The program also closes automatically if a collision is detected.
+Note: This is an early prototype. Apples can sometimes spawn on top of the snake.
 
 Planned updates are listed in the [todo.md](docs/todo.md) file.
 

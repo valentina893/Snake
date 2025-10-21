@@ -1,6 +1,6 @@
 # Snake_Game
 
-Note: This is near-finished project. Apples can sometimes spawn on top of the snake.
+Note: This is a near-finished project. Apples can sometimes spawn on top of the snake.
 
 Planned updates are listed in the [todo.md](docs/todo.md) file.
 

@@ -63,6 +63,11 @@ Helper function that puts game in paused-state loop waiting to be restarted or s
 void _game_paused(game* game);
 
 /*
+Helper for spawning an apple on a spot where the snake doesn't currently occupy.
+*/
+void _game_spawn_apple(game* game);
+
+/*
 Helper function that checks snake entity's head coordinates with walls, apple, and other snake pieces.
 - Sets paused to 1 and returns 1 if snake collides with itself or a wall.
 - Appends to the snake if it collides with an apple.

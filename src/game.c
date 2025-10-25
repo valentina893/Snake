@@ -176,7 +176,7 @@ void _game_spawn_apple(game* game) {
     int x = rand_int(0, i - 1);//rand_int(0, game->grid_width - game->snake.size - 1);
     int y = rand_int(0, i - 1);//rand_int(0, game->grid_height - game->snake.size - 1);
 
-    printf("chosen spots: %d, %d\n", x, y);
+    //printf("chosen spots: %d, %d\n", x, y);
 
     //printf("accessing spots in coord arrays...\n");
     game->apple_x = x_coords[x];
@@ -214,7 +214,7 @@ int _game_check_collisions(game* game) {
     if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
         _game_spawn_apple(game);
         snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 1);
-        printf("successfully spawned apple\n");
+        //printf("successfully spawned apple\n");
         //game->apple_x = rand_int(0, game->grid_width - 1);
         //game->apple_y = rand_int(0, game->grid_height - 1);
     } else {

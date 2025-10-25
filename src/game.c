@@ -1,5 +1,6 @@
 // game.c
 
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "game.h"
@@ -89,6 +90,8 @@ void _game_restart(game* game) {
 
 void _game_render(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
+    //printf("rendering game...\n");
+
     if (game == NULL) return;
 
     renderer_clear(&game->renderer, 0, 0, 0, 0);
@@ -118,6 +121,8 @@ void _game_render(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     renderer_present(&game->renderer);
 
+    //printf("finished rendering\n");
+
 }
 
 void _game_paused(game* game) {
@@ -133,6 +138,53 @@ void _game_paused(game* game) {
     }
 
     return;
+
+}
+
+void _game_spawn_apple(game* game) {
+
+    //printf("spawning apple...\n");
+
+    //printf("coord array size: %d\n", game->grid_width - game->snake.size);
+
+    //printf("malloc'ing arrays...\n");
+    int* x_coords = (int*)malloc(sizeof(int) * ((game->grid_width * game->grid_height) - game->snake.size));
+    int* y_coords = (int*)malloc(sizeof(int) * ((game->grid_width * game->grid_height) - game->snake.size));
+
+    int i = 0;
+
+    //printf("filling arrays with open coords...\n");
+    for (int r = 0; r < game->grid_width; r++) {
+        for (int c = 0; c < game->grid_height; c++) {
+            int snake_contains = 0;
+            snake_node* curr = game->snake.head;
+            while (curr != NULL) {
+                if (r == curr->x && c == curr->y) {
+                    snake_contains = 1;
+                    break;
+                }
+                curr = curr->next;
+            }
+            if (!snake_contains) {
+                x_coords[i] = r;
+                y_coords[i] = c;
+                i++;
+            }
+        }
+    }
+
+    int x = rand_int(0, i - 1);//rand_int(0, game->grid_width - game->snake.size - 1);
+    int y = rand_int(0, i - 1);//rand_int(0, game->grid_height - game->snake.size - 1);
+
+    printf("chosen spots: %d, %d\n", x, y);
+
+    //printf("accessing spots in coord arrays...\n");
+    game->apple_x = x_coords[x];
+    game->apple_y = y_coords[x];
+
+    //printf("free'ing coord arrays...\n");
+    free(x_coords);
+    free(y_coords);
 
 }
 
@@ -159,11 +211,12 @@ int _game_check_collisions(game* game) {
         curr = curr->next;
     }
 
-    // move outside of check_collisions and into _game_update() ?
     if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
+        _game_spawn_apple(game);
         snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 1);
-        game->apple_x = rand_int(0, game->grid_width - 1);
-        game->apple_y = rand_int(0, game->grid_height - 1);
+        printf("successfully spawned apple\n");
+        //game->apple_x = rand_int(0, game->grid_width - 1);
+        //game->apple_y = rand_int(0, game->grid_height - 1);
     } else {
         snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 0);
     }

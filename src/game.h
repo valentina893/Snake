@@ -56,9 +56,10 @@ Helper function that re-initializes components of the game engine class, excludi
 void _game_restart(game* game);
 
 /*
-Helper function for rendering the full current state of the game to the window with custom color for snake.
+Helper function for rendering the full current state of the game to the window.
+- is_dead helps determine if renderer draws the snake as green (alive) or grey (dead).
 */
-void _game_render(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+void _game_render(game* game, int is_dead);
 
 /*
 Helper function that puts game in paused-state loop waiting to be restarted or shut down.

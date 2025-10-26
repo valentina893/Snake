@@ -51,7 +51,7 @@ void game_run(game* game) {
     while (game->running) {
         input_read(&game->input, &game->running);
         _game_update(game, &last_move_time);
-        _game_render(game, 0, 255, 0, 0);
+        _game_render(game, 0);
     }
 
     return;
@@ -88,9 +88,17 @@ void _game_restart(game* game) {
 
 }
 
-void _game_render(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void _game_render(game* game, int is_dead) {
 
     if (game == NULL) return;
+    
+    int r, g, b, a;
+    
+    if (is_dead) {
+        r = g = b = a = 100;
+    } else {
+        r = 0; g = 255; b = 0; a = 0;
+    }
 
     renderer_clear(&game->renderer, 0, 0, 0, 0);
 
@@ -130,7 +138,7 @@ void _game_paused(game* game) {
         if (game->input.restart) {
             _game_restart(game);
         }
-        _game_render(game, 50, 50, 50, 0);
+        _game_render(game, 1);
     }
 
     return;

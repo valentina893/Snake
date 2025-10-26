@@ -9,8 +9,8 @@ One element of the snake entity.
 - next: next snake_node furthest from head in direction of travel.
 */
 typedef struct snake_node {
+    snake_node* next;
     int x, y;
-    struct snake_node* next;
 } snake_node;
 
 /*
@@ -19,19 +19,19 @@ Snake entity represented by a linked list. Traversed from head -> tail.
 - head: front-most snake_node in direction of traversal.
 */
 typedef struct snake {
+    snake_node* head;
     int size;
-    struct snake_node* head;
 } snake;
 
 /*
 Creates a new snake_node.
 */
-struct snake_node* snake_node_create(int x, int y, struct snake_node* next);
+snake_node* snake_node_create(int x, int y, struct snake_node* next);
 
 /*
 Creates a snake entity of size 1 at specified position.
 */
-struct snake snake_create(int x, int y);
+snake snake_create(int x, int y);
 
 /*
 Moves each snake_node in snake_entity starting from head.

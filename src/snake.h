@@ -9,7 +9,7 @@ One element of the snake entity.
 - next: next snake_node furthest from head in direction of travel.
 */
 typedef struct snake_node {
-    snake_node* next;
+    struct snake_node* next;
     int x, y;
 } snake_node;
 

@@ -18,13 +18,13 @@ Initializes input class values to zero.
 input input_create();
 
 /*
-Called in game_run() loop to check/update user inputs.
+Helper function that's called in game_run() loop to check/update user inputs.
 */
-void input_read(input* input, int* running);
+void _input_read(input* input, int* running);
 
 /*
-Helper for checking which key stroke was pressed.
+Helper function for checking which key stroke was pressed and updating the struct.
 */
-void input_keydown(input* input, SDL_Event* event, int* running);
+void _input_keydown(input* input, SDL_Event* event, int* running);
 
 #endif

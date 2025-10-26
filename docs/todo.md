@@ -1,6 +1,6 @@
 # TODO List
 
-1. Prevent apples from spawning on top of snake.
+1. Have the game check if the user won...
 
 2. Package finished game into .dmg file for easy distribution!
    - Make a cool application icon...

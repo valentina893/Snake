@@ -6,7 +6,7 @@ input input_create() {
     return (input){1, 0, 0};
 }
 
-void _input_read(input* input, int* running) {
+void input_read(input* input, int* running) {
 
     if (input == NULL || running == NULL) return;
 
@@ -18,7 +18,7 @@ void _input_read(input* input, int* running) {
                 *running = 0;
                 break;
             case SDL_KEYDOWN:
-                input_keydown(input, &event, running);
+                _input_keydown(input, &event, running);
                 break;
         }
     }

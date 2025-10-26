@@ -18,9 +18,9 @@ Initializes input class values to zero.
 input input_create();
 
 /*
-Helper function that's called in game_run() loop to check/update user inputs.
+Called in game_run() loop to check/update user inputs.
 */
-void _input_read(input* input, int* running);
+void input_read(input* input, int* running);
 
 /*
 Helper function for checking which key stroke was pressed and updating the struct.

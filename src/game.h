@@ -8,6 +8,9 @@
 #include "renderer.h"
 #include "snake.h"
 
+/*
+Game engine class
+*/
 typedef struct game {
 
     int running;
@@ -64,6 +67,7 @@ void _game_paused(game* game);
 
 /*
 Helper for spawning an apple on a spot where the snake doesn't currently occupy.
+- Process is completed by building arrays of all open x and y spots and choosing random index for each.
 */
 void _game_spawn_apple(game* game);
 

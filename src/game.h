@@ -13,18 +13,19 @@ Game engine class
 */
 typedef struct game {
 
+    snake snake;
+    renderer renderer;
+    input input;
+
     int running;
     int paused;
 
-    snake snake;
     int apple_x, apple_y;
 
-    input input;
-    int move_interval;
-
-    renderer renderer;
     int window_width, window_height;
     int grid_width, grid_height;
+    
+    int move_interval;
 
 } game;
 

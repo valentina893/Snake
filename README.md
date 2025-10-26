@@ -1,16 +1,7 @@
 # Snake_Game
 
-Note: This is a near-finished project. Apples can sometimes spawn on top of the snake.
+This branch focuses on the following:
+- Fixing the issue of apples spawning on top of the snake.
+- Refactoring code for conciseness and clarity.
 
-Planned updates are listed in the [todo.md](docs/todo.md) file.
-
-Controls:
-- WASD/Arrow Keys: changing direction of snake.
-- R: restarting the game.
-- ESC: quitting the game.
-
-sdl2 is a required dependency
-
-for mac/linux systems, compile and run with: gcc src/main.c src/game.c src/renderer.c src/snake.c src/input.c -o snake $(pkg-config --cflags --libs sdl2) && ./snake
-
-![example](/assets/screenshot.png "example")
+This version of the game is unstable and currently undergoing more development.

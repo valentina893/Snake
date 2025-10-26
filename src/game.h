@@ -8,20 +8,24 @@
 #include "renderer.h"
 #include "snake.h"
 
+/*
+Game engine class
+*/
 typedef struct game {
+
+    snake snake;
+    renderer renderer;
+    input input;
 
     int running;
     int paused;
 
-    snake snake;
     int apple_x, apple_y;
 
-    input input;
-    int move_interval;
-
-    renderer renderer;
     int window_width, window_height;
     int grid_width, grid_height;
+    
+    int move_interval;
 
 } game;
 
@@ -53,14 +57,21 @@ Helper function that re-initializes components of the game engine class, excludi
 void _game_restart(game* game);
 
 /*
-Helper function for rendering the full current state of the game to the window with custom color for snake.
+Helper function for rendering the full current state of the game to the window.
+- is_dead helps determine if renderer draws the snake as green (alive) or grey (dead).
 */
-void _game_render(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+void _game_render(game* game, int is_dead);
 
 /*
 Helper function that puts game in paused-state loop waiting to be restarted or shut down.
 */
 void _game_paused(game* game);
+
+/*
+Helper for spawning an apple on a spot where the snake doesn't currently occupy.
+- Process is completed by building arrays of all open x and y spots and choosing random index for each.
+*/
+void _game_spawn_apple(game* game);
 
 /*
 Helper function that checks snake entity's head coordinates with walls, apple, and other snake pieces.

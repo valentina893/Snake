@@ -23,8 +23,8 @@ Called in game_run() loop to check/update user inputs.
 void input_read(input* input, int* running);
 
 /*
-Helper for checking which key stroke was pressed.
+Helper function for checking which key stroke was pressed and updating the struct.
 */
-void input_keydown(input* input, SDL_Event* event, int* running);
+void _input_keydown(input* input, SDL_Event* event, int* running);
 
 #endif

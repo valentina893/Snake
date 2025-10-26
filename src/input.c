@@ -18,7 +18,7 @@ void input_read(input* input, int* running) {
                 *running = 0;
                 break;
             case SDL_KEYDOWN:
-                input_keydown(input, &event, running);
+                _input_keydown(input, &event, running);
                 break;
         }
     }
@@ -27,7 +27,7 @@ void input_read(input* input, int* running) {
 
 }
 
-void input_keydown(input* input, SDL_Event* event, int* running) {
+void _input_keydown(input* input, SDL_Event* event, int* running) {
 
     if (input == NULL || event == NULL || running == NULL) return;
 

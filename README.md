@@ -1,7 +1,5 @@
 # Snake :snake:
 
-This is a near complete personal project of mine.
-
 ![screenshot](/assets/screenshot.png)
 
 Controls:

@@ -1,4 +1,4 @@
-# Snake :snake:
+# Snake :snake::video_game:
 
 ![screenshot](/assets/screenshot.png)
 

@@ -1,4 +1,4 @@
-# Snake_Game
+# Snake :snake:
 
 This is a near complete personal project of mine.
 

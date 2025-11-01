@@ -51,7 +51,7 @@ void game_run(game* game) {
     while (game->running) {
         input_read(&game->input, &game->running);
         _game_update(game, &last_move_time);
-        _game_render(game, 0);
+        _game_render(game, 0, 0);
     }
 
     return;
@@ -110,19 +110,21 @@ void _game_render_snake(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
 }
 
-void _game_render(game* game, int is_dead) {
+void _game_render(game* game, int is_dead, int won) {
 
     if (game == NULL) return;
 
     renderer_clear(&game->renderer, 0, 0, 0, 0);
 
-    // render snake
     if (is_dead) {
         _game_render_snake(game, 100, 100, 100, 100);
+    } else if (won) {
+        _game_render_snake(game, 255, 215, 0, 0);
     } else {
         _game_render_snake(game, 0, 255, 0, 0);
     }
 
+    // need to prevent new apple coords from forming...
     renderer_drawRect(
         &game->renderer,
         game->apple_x * (game->window_width / game->grid_width), 
@@ -145,7 +147,7 @@ void _game_paused(game* game) {
         if (game->input.restart) {
             _game_restart(game);
         }
-        _game_render(game, 1);
+        _game_render(game, 1, 0);
     }
 
     return;

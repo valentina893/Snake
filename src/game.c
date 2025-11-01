@@ -88,19 +88,9 @@ void _game_restart(game* game) {
 
 }
 
-void _game_render(game* game, int is_dead) {
+void _game_render_snake(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     if (game == NULL) return;
-    
-    int r, g, b, a;
-    
-    if (is_dead) {
-        r = g = b = a = 100;
-    } else {
-        r = 0; g = 255; b = 0; a = 0;
-    }
-
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
 
     struct snake_node* curr = game->snake.head;
 
@@ -114,6 +104,23 @@ void _game_render(game* game, int is_dead) {
             r, g, b, a
         );
         curr = curr->next;
+    }
+
+    return;
+
+}
+
+void _game_render(game* game, int is_dead) {
+
+    if (game == NULL) return;
+
+    renderer_clear(&game->renderer, 0, 0, 0, 0);
+
+    // render snake
+    if (is_dead) {
+        _game_render_snake(game, 100, 100, 100, 100);
+    } else {
+        _game_render_snake(game, 0, 255, 0, 0);
     }
 
     renderer_drawRect(

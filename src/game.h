@@ -57,15 +57,28 @@ Helper function that re-initializes components of the game engine class, excludi
 void _game_restart(game* game);
 
 /*
-Helper function for rendering the full current state of the game to the window.
-- is_dead helps determine if renderer draws the snake as green (alive) or grey (dead).
+Helper function for rendering current frame when game is running as usual.
 */
-void _game_render(game* game, int is_dead);
+void _game_render_running(game* game);
+
+/*
+Helper function for drawing game when user has lost.
+- Snake color is grey, apple stays red.
+*/
+void _game_render_lose(game* game);
+
+/*
+Helper function for drawing the game when user has won.
+- Snake fills entire board and drawn with color gold.
+*/
+void _game_render_win(game* game);
 
 /*
 Helper function that puts game in paused-state loop waiting to be restarted or shut down.
+- lose denotes if it should render the game in a losing state
+- win denotes if it should render the game in the winning state
 */
-void _game_paused(game* game);
+void _game_paused(game* game, int lose, int win);
 
 /*
 Helper for spawning an apple on a spot where the snake doesn't currently occupy.

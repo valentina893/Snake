@@ -65,7 +65,7 @@ void _game_render_snake(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 Helper function for rendering the full current state of the game to the window.
 - is_dead helps determine if renderer draws the snake as green (alive) or grey (dead).
 */
-void _game_render(game* game, int is_dead);
+void _game_render(game* game, int is_dead, int won);
 
 /*
 Helper function that puts game in paused-state loop waiting to be restarted or shut down.

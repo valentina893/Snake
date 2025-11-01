@@ -1,7 +1,6 @@
 // game.c
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "game.h"
 
@@ -51,7 +50,6 @@ void game_run(game* game) {
     while (game->running) {
         input_read(&game->input, &game->running);
         _game_update(game, &last_move_time);
-        //_game_render(game, 0, 0); running
         _game_render_running(game);
     }
 
@@ -88,36 +86,6 @@ void _game_restart(game* game) {
     return;
 
 }
-
-/*
-void _game_render(game* game, int is_dead, int won) {
-
-    if (game == NULL) return;
-
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
-
-    if (is_dead) {
-        _game_render_snake(game, 100, 100, 100, 100);
-    } else if (won) {
-        _game_render_snake(game, 255, 215, 0, 0);
-    } else {
-        _game_render_snake(game, 0, 255, 0, 0);
-    }
-
-    // need to prevent new apple coords from forming...
-    renderer_drawRect(
-        &game->renderer,
-        game->apple_x * (game->window_width / game->grid_width), 
-        game->apple_y * (game->window_height / game->grid_height), 
-        (game->window_width / game->grid_width) - 2, 
-        (game->window_height / game->grid_height) - 2, 
-        255, 0, 0, 0
-    );
-
-    renderer_present(&game->renderer);
-
-}
-*/
 
 void _game_render_running(game* game) {
 
@@ -235,8 +203,19 @@ void _game_paused(game* game, int lose, int win) {
 
 void _game_spawn_apple(game* game) {
 
-    int* x_coords = (int*)malloc(sizeof(int) * ((game->grid_width * game->grid_height) - game->snake.size));
-    int* y_coords = (int*)malloc(sizeof(int) * ((game->grid_width * game->grid_height) - game->snake.size));
+    if (game == NULL) return;
+
+    int x_size = (game->grid_width * game->grid_height) - game->snake.size;
+    int y_size = (game->grid_width * game->grid_height) - game->snake.size;
+
+    if (x_size == 0 || y_size == 0) {
+        game->apple_x = -1;
+        game->apple_y = -1;
+        return;
+    }
+
+    int* x_coords = (int*)malloc(sizeof(int) * x_size);
+    int* y_coords = (int*)malloc(sizeof(int) * y_size);
 
     int i = 0;
 
@@ -282,7 +261,7 @@ int _game_check_collisions(game* game) {
         return 1;
     }
 
-    struct snake_node* curr = game->snake.head->next;
+    snake_node* curr = game->snake.head->next;
 
     while (curr != NULL) {
         if (game->snake.head->x == curr->x && game->snake.head->y == curr->y) {
@@ -315,11 +294,12 @@ void _game_update(game* game, Uint32* last_move_time) {
     }
 
     if (now - *last_move_time >= game->move_interval) {
-        if (_game_check_collisions(game)) {
-            _game_paused(game, 1, 0);
-        }
         if (game->snake.size == game->grid_width * game->grid_height) {
+            game->paused = 1;
             _game_paused(game, 0, 1);
+        } else if (_game_check_collisions(game)) {
+            game->paused = 1;
+            _game_paused(game, 1, 0);
         }
         *last_move_time = now;
     }

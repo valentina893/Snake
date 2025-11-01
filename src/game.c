@@ -51,7 +51,7 @@ void game_run(game* game) {
     while (game->running) {
         input_read(&game->input, &game->running);
         _game_update(game, &last_move_time);
-        _game_render(game, 0, 0);
+        //_game_render(game, 0, 0); running
     }
 
     return;
@@ -88,28 +88,7 @@ void _game_restart(game* game) {
 
 }
 
-void _game_render_snake(game* game, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-
-    if (game == NULL) return;
-
-    struct snake_node* curr = game->snake.head;
-
-    while (curr != NULL) {
-        renderer_drawRect(
-            &game->renderer,
-            curr->x * (game->window_width / game->grid_width), 
-            curr->y  * (game->window_height / game->grid_height), 
-            (game->window_width / game->grid_width) - 2, 
-            (game->window_height / game->grid_height) - 2,
-            r, g, b, a
-        );
-        curr = curr->next;
-    }
-
-    return;
-
-}
-
+/*
 void _game_render(game* game, int is_dead, int won) {
 
     if (game == NULL) return;
@@ -137,8 +116,9 @@ void _game_render(game* game, int is_dead, int won) {
     renderer_present(&game->renderer);
 
 }
+*/
 
-void _game_paused(game* game) {
+void _game_paused(game* game, int lose, int win) {
 
     if (game == NULL) return;
 
@@ -146,8 +126,10 @@ void _game_paused(game* game) {
         input_read(&game->input, &game->running);
         if (game->input.restart) {
             _game_restart(game);
+        } else {
+            if (lose) _game_render_lose(game);
+            if (win) _game_render_win(game);
         }
-        _game_render(game, 1, 0);
     }
 
     return;
@@ -237,10 +219,10 @@ void _game_update(game* game, Uint32* last_move_time) {
 
     if (now - *last_move_time >= game->move_interval) {
         if (_game_check_collisions(game)) {
-            _game_paused(game);
+            _game_paused(game, 1, 0);
         }
         if (game->snake.size == game->grid_width * game->grid_height) {
-            _game_paused(game);
+            _game_paused(game, 0, 1);
         }
         *last_move_time = now;
     }

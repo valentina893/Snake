@@ -1,15 +1,5 @@
 // game.h
 
-/*
-
-TODO: make multiple render functions for various parts of the game
-
-- _game_render_running() -> when the game is running as usual
-- _game_render_dead() -> when game is in dead loop
-- _game_render_win() -> when snake size == w * h of grid
-
-*/
-
 #ifndef GAME_H
 #define GAME_H
 
@@ -67,12 +57,6 @@ Helper function that re-initializes components of the game engine class, excludi
 void _game_restart(game* game);
 
 /*
-Helper function for rendering the full current state of the game to the window.
-- is_dead helps determine if renderer draws the snake as green (alive) or grey (dead).
-*/
-//void _game_render(game* game, int is_dead, int won);
-
-/*
 Helper function for rendering current frame when game is running as usual.
 */
 void _game_render_running(game* game);
@@ -91,6 +75,8 @@ void _game_render_win(game* game);
 
 /*
 Helper function that puts game in paused-state loop waiting to be restarted or shut down.
+- lose denotes if it should render the game in a losing state
+- win denotes if it should render the game in the winning state
 */
 void _game_paused(game* game, int lose, int win);
 

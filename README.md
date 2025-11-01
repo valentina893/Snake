@@ -1,6 +1,6 @@
 # Snake win_feature branch
 
-#WARNING: 
+**WARNING:**
 This branch is under active development and may contain unstable or incomplete code.
 Running or compiling the project from this branch could result in errors, crashes, or unexpected behavior.
 

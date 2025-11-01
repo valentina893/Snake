@@ -239,6 +239,9 @@ void _game_update(game* game, Uint32* last_move_time) {
         if (_game_check_collisions(game)) {
             _game_paused(game);
         }
+        if (game->snake.size == game->grid_width * game->grid_height) {
+            _game_paused(game);
+        }
         *last_move_time = now;
     }
 

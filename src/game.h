@@ -8,8 +8,6 @@ TODO: make multiple render functions for various parts of the game
 - _game_render_dead() -> when game is in dead loop
 - _game_render_win() -> when snake size == w * h of grid
 
-_game_paused() will have 2 int variables to know if it should render the dead or win state.
-
 */
 
 #ifndef GAME_H

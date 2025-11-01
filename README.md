@@ -1,14 +1,8 @@
-# Snake :snake::video_game:
+# Snake win_feature branch
 
-![screenshot](/assets/screenshot.png)
+WARNING: This branch is under active development and may contain unstable or incomplete code.
+Running or compiling the project from this branch could result in errors, crashes, or unexpected behavior.
 
-Controls:
-- WASD/Arrow Keys: Changing direction of the snake.
-- R: Restarts the game.
-- ESC: Quits from the game.
-
-SDL2 is a required dependency.
-
-For mac/linux systems, compile and run with: gcc src/main.c src/renderer.c src/snake.c src/input.c src/game.c -o snake $(pkg-config --cflags --libs sdl2) && ./snake
-
-New features to be added can be found in the [todo](/docs/todo.md) document.
+If you want to play or test the stable version of the game, please switch to the [main](https://github.com/valentina893/Snake/tree/main)
+ branch instead.
+That branch contains the most recent working build of Snake and is safe to run.

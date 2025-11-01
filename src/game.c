@@ -52,6 +52,7 @@ void game_run(game* game) {
         input_read(&game->input, &game->running);
         _game_update(game, &last_move_time);
         //_game_render(game, 0, 0); running
+        _game_render_running(game);
     }
 
     return;
@@ -122,6 +123,8 @@ void _game_render_running(game* game) {
 
     if (game == NULL) return;
 
+    renderer_clear(&game->renderer, 0, 0, 0, 0);
+
     snake_node* curr = game->snake.head;
 
     while (curr != NULL) {
@@ -145,6 +148,8 @@ void _game_render_running(game* game) {
         255, 0, 0, 0
     );
 
+    renderer_present(&game->renderer);
+
     return;
 
 }
@@ -152,6 +157,8 @@ void _game_render_running(game* game) {
 void _game_render_lose(game* game) {
 
     if (game == NULL) return;
+
+    renderer_clear(&game->renderer, 0, 0, 0, 0);
 
     snake_node* curr = game->snake.head;
 
@@ -176,6 +183,8 @@ void _game_render_lose(game* game) {
         255, 0, 0, 0
     );
 
+    renderer_present(&game->renderer);
+
     return;
 
 }
@@ -183,6 +192,8 @@ void _game_render_lose(game* game) {
 void _game_render_win(game* game) {
 
     if (game == NULL) return;
+
+    renderer_clear(&game->renderer, 0, 0, 0, 0);
 
     snake_node* curr = game->snake.head;
 
@@ -197,6 +208,8 @@ void _game_render_win(game* game) {
         );
         curr = curr->next;
     }
+
+    renderer_present(&game->renderer);
 
     return;
 

@@ -118,6 +118,90 @@ void _game_render(game* game, int is_dead, int won) {
 }
 */
 
+void _game_render_running(game* game) {
+
+    if (game == NULL) return;
+
+    snake_node* curr = game->snake.head;
+
+    while (curr != NULL) {
+        renderer_drawRect(
+            &game->renderer,
+            curr->x * (game->window_width / game->grid_width), 
+            curr->y * (game->window_height / game->grid_height), 
+            (game->window_width / game->grid_width) - 2, 
+            (game->window_height / game->grid_height) - 2, 
+            0, 255, 0, 0
+        );
+        curr = curr->next;
+    }
+
+    renderer_drawRect(
+        &game->renderer,
+        game->apple_x * (game->window_width / game->grid_width), 
+        game->apple_y * (game->window_height / game->grid_height), 
+        (game->window_width / game->grid_width) - 2, 
+        (game->window_height / game->grid_height) - 2, 
+        255, 0, 0, 0
+    );
+
+    return;
+
+}
+
+void _game_render_lose(game* game) {
+
+    if (game == NULL) return;
+
+    snake_node* curr = game->snake.head;
+
+    while (curr != NULL) {
+        renderer_drawRect(
+            &game->renderer,
+            curr->x * (game->window_width / game->grid_width), 
+            curr->y * (game->window_height / game->grid_height), 
+            (game->window_width / game->grid_width) - 2, 
+            (game->window_height / game->grid_height) - 2, 
+            100, 100, 100, 100
+        );
+        curr = curr->next;
+    }
+
+    renderer_drawRect(
+        &game->renderer,
+        game->apple_x * (game->window_width / game->grid_width), 
+        game->apple_y * (game->window_height / game->grid_height), 
+        (game->window_width / game->grid_width) - 2, 
+        (game->window_height / game->grid_height) - 2, 
+        255, 0, 0, 0
+    );
+
+    return;
+
+}
+
+void _game_render_win(game* game) {
+
+    if (game == NULL) return;
+
+    snake_node* curr = game->snake.head;
+
+    while (curr != NULL) {
+        renderer_drawRect(
+            &game->renderer,
+            curr->x * (game->window_width / game->grid_width), 
+            curr->y * (game->window_height / game->grid_height), 
+            (game->window_width / game->grid_width) - 2, 
+            (game->window_height / game->grid_height) - 2, 
+            255, 215, 0, 0
+        );
+        curr = curr->next;
+    }
+
+    return;
+
+}
+
 void _game_paused(game* game, int lose, int win) {
 
     if (game == NULL) return;

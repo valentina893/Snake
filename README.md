@@ -1,6 +1,8 @@
 # Snake :snake::video_game:
 
-![screenshot](/assets/screenshot2.png)
+<p align="center">
+  <img src="assets/demo.gif" width="600"/>
+</p>
 
 Controls:
 - WASD/Arrow Keys: Changing direction of the snake.

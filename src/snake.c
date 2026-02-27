@@ -7,7 +7,7 @@
 
 struct snake_node* snake_node_create(int x, int y, struct snake_node* next) {
 
-    struct snake_node* snake_node = (struct snake_node*)malloc(sizeof(snake_node));
+    struct snake_node* snake_node = (struct snake_node*)malloc(sizeof(struct snake_node));
 
     snake_node->x = x;
     snake_node->y = y;

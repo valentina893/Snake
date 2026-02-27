@@ -3,7 +3,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 /*
 Input class for keeping track of user input that game engine checks each frame.

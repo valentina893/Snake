@@ -10,7 +10,7 @@ game game_create(
     int window_height,
     int grid_width,
     int grid_height,
-    int move_interval
+    Uint32 move_interval
 ) 
 {
 

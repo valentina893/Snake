@@ -5,7 +5,7 @@
 #include "game.h"
 
 game game_create(
-    char* window_title,
+    char *window_title,
     int window_width,
     int window_height,
     int grid_width,
@@ -18,15 +18,18 @@ game game_create(
 
     rand_seed();
 
+    game.input = (struct input*)malloc(sizeof(struct input));
+    game.renderer = (struct renderer*)malloc(sizeof(struct renderer));
+    
+    input_create(game.input);
+    renderer_create(game.renderer, window_title, window_width, window_height);
+
     game.snake = snake_create(rand_int(0, grid_width - 1), rand_int(0, grid_height - 1));
 
     game.apple_x = rand_int(0, grid_width - 1);
     game.apple_y = rand_int(0, grid_height - 1);
 
-    game.input = input_create();
     game.move_interval = move_interval;
-
-    renderer_create(&game.renderer, window_title, window_width, window_height);
 
     game.window_width = window_width;
     game.window_height = window_height;
@@ -41,14 +44,14 @@ game game_create(
 
 }
 
-void game_run(game* game) {
+void game_run(game *game) {
 
     if (game == NULL) return;
 
     Uint32 last_move_time = SDL_GetTicks();
 
     while (game->running) {
-        input_read(&game->input, &game->running);
+        input_read(game->input, &game->running);
         _game_update(game, &last_move_time);
         _game_render_running(game);
     }
@@ -57,18 +60,18 @@ void game_run(game* game) {
 
 }
 
-void game_delete(game* game) {
+void game_delete(game *game) {
 
     if (game == NULL) return;
 
     snake_delete(&game->snake);
-    renderer_delete(&game->renderer);
+    renderer_delete(game->renderer);
 
     return;
 
 }
 
-void _game_restart(game* game) {
+void _game_restart(game *game) {
 
     if (game == NULL) return;
 
@@ -79,7 +82,7 @@ void _game_restart(game* game) {
     game->apple_x = rand_int(0, game->grid_width - 1);
     game->apple_y = rand_int(0, game->grid_height - 1);
 
-    game->input = (input){1, 0, 0};
+    input_create(game->input);
 
     game->paused = 0;
 
@@ -87,17 +90,17 @@ void _game_restart(game* game) {
 
 }
 
-void _game_render_running(game* game) {
+void _game_render_running(game *game) {
 
     if (game == NULL) return;
 
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
+    renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    snake_node* curr = game->snake.head;
+    node* curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
-            &game->renderer,
+            game->renderer,
             curr->x * (game->window_width / game->grid_width), 
             curr->y * (game->window_height / game->grid_height), 
             (game->window_width / game->grid_width) - 2, 
@@ -108,7 +111,7 @@ void _game_render_running(game* game) {
     }
 
     renderer_drawRect(
-        &game->renderer,
+        game->renderer,
         game->apple_x * (game->window_width / game->grid_width), 
         game->apple_y * (game->window_height / game->grid_height), 
         (game->window_width / game->grid_width) - 2, 
@@ -116,23 +119,23 @@ void _game_render_running(game* game) {
         255, 0, 0, 0
     );
 
-    renderer_present(&game->renderer);
+    renderer_present(game->renderer);
 
     return;
 
 }
 
-void _game_render_lose(game* game) {
+void _game_render_lose(game *game) {
 
     if (game == NULL) return;
 
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
+    renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    snake_node* curr = game->snake.head;
+    node* curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
-            &game->renderer,
+            game->renderer,
             curr->x * (game->window_width / game->grid_width), 
             curr->y * (game->window_height / game->grid_height), 
             (game->window_width / game->grid_width) - 2, 
@@ -143,7 +146,7 @@ void _game_render_lose(game* game) {
     }
 
     renderer_drawRect(
-        &game->renderer,
+        game->renderer,
         game->apple_x * (game->window_width / game->grid_width), 
         game->apple_y * (game->window_height / game->grid_height), 
         (game->window_width / game->grid_width) - 2, 
@@ -151,23 +154,23 @@ void _game_render_lose(game* game) {
         255, 0, 0, 0
     );
 
-    renderer_present(&game->renderer);
+    renderer_present(game->renderer);
 
     return;
 
 }
 
-void _game_render_win(game* game) {
+void _game_render_win(game *game) {
 
     if (game == NULL) return;
 
-    renderer_clear(&game->renderer, 0, 0, 0, 0);
+    renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    snake_node* curr = game->snake.head;
+    node* curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
-            &game->renderer,
+            game->renderer,
             curr->x * (game->window_width / game->grid_width), 
             curr->y * (game->window_height / game->grid_height), 
             (game->window_width / game->grid_width) - 2, 
@@ -177,19 +180,19 @@ void _game_render_win(game* game) {
         curr = curr->next;
     }
 
-    renderer_present(&game->renderer);
+    renderer_present(game->renderer);
 
     return;
 
 }
 
-void _game_paused(game* game, int lose, int win) {
+void _game_paused(game *game, int lose, int win) {
 
     if (game == NULL) return;
 
     while (game->running && game->paused) {
-        input_read(&game->input, &game->running);
-        if (game->input.restart) {
+        input_read(game->input, &game->running);
+        if (game->input->restart) {
             _game_restart(game);
         } else {
             if (lose) _game_render_lose(game);
@@ -201,7 +204,7 @@ void _game_paused(game* game, int lose, int win) {
 
 }
 
-void _game_spawn_apple(game* game) {
+void _game_spawn_apple(game *game) {
 
     if (game == NULL) return;
 
@@ -222,7 +225,7 @@ void _game_spawn_apple(game* game) {
     for (int r = 0; r < game->grid_width; r++) {
         for (int c = 0; c < game->grid_height; c++) {
             int snake_contains = 0;
-            snake_node* curr = game->snake.head;
+            node* curr = game->snake.head;
             while (curr != NULL) {
                 if (r == curr->x && c == curr->y) {
                     snake_contains = 1;
@@ -248,7 +251,7 @@ void _game_spawn_apple(game* game) {
 
 }
 
-int _game_check_collisions(game* game) {
+int _game_check_collisions(game *game) {
 
     if (game == NULL) return 1;
 
@@ -261,7 +264,7 @@ int _game_check_collisions(game* game) {
         return 1;
     }
 
-    snake_node* curr = game->snake.head->next;
+    node* curr = game->snake.head->next;
 
     while (curr != NULL) {
         if (game->snake.head->x == curr->x && game->snake.head->y == curr->y) {
@@ -272,23 +275,23 @@ int _game_check_collisions(game* game) {
     }
 
     if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
-        snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 1);
+        snake_move(&game->snake, game->input->dir_x, game->input->dir_y, 1);
         _game_spawn_apple(game);
     } else {
-        snake_move(&game->snake, game->input.dir_x, game->input.dir_y, 0);
+        snake_move(&game->snake, game->input->dir_x, game->input->dir_y, 0);
     }
 
     return 0;
 
 }
 
-void _game_update(game* game, Uint32* last_move_time) {
+void _game_update(game *game, Uint32 *last_move_time) {
 
     if (game == NULL || last_move_time == NULL) return;
 
     Uint32 now = SDL_GetTicks();
 
-    if (game->input.restart) {
+    if (game->input->restart) {
         _game_restart(game);
         return;
     }

@@ -5,30 +5,30 @@
 
 #include "snake.h"
 
-struct snake_node* snake_node_create(int x, int y, struct snake_node* next) {
+node *node_create(int x, int y, node *next) {
 
-    struct snake_node* snake_node = (struct snake_node*)malloc(sizeof(struct snake_node));
+    node *node = (struct node*)malloc(sizeof(node));
 
-    snake_node->x = x;
-    snake_node->y = y;
-    snake_node->next = next;
+    node->x = x;
+    node->y = y;
+    node->next = next;
 
-    return snake_node;
+    return node;
 
 }
 
-struct snake snake_create(int x, int y) {
+snake snake_create(int x, int y) {
 
     snake snake;
 
     snake.size = 1;
-    snake.head = snake_node_create(x, y, NULL);
+    snake.head = node_create(x, y, NULL);
 
     return snake;
 
 }
 
-void snake_move(struct snake* snake, int dx, int dy, int append) {
+void snake_move(snake *snake, int dx, int dy, int append) {
 
     if (snake == NULL || snake->head == NULL) return;
 
@@ -37,7 +37,7 @@ void snake_move(struct snake* snake, int dx, int dy, int append) {
 
     snake->head->x += dx, snake->head->y += dy;
 
-    struct snake_node* curr = snake->head;
+    node *curr = snake->head;
 
     while (curr->next != NULL) {
 
@@ -59,7 +59,7 @@ void snake_move(struct snake* snake, int dx, int dy, int append) {
     }
 
     if (append) {
-        curr->next = snake_node_create(prev_x, prev_y, NULL);
+        curr->next = node_create(prev_x, prev_y, NULL);
         snake->size++;
     }
 
@@ -67,37 +67,20 @@ void snake_move(struct snake* snake, int dx, int dy, int append) {
 
 }
 
-void snake_delete(struct snake* snake) {
+void snake_delete(snake *snake) {
 
     if (snake == NULL) return;
 
-    struct snake_node* curr = snake->head;
+    node *curr = snake->head;
 
     while (curr != NULL) {
-        struct snake_node* temp = curr->next;
+        node *temp = curr->next;
         free(curr);
         curr = temp;
     }
 
     snake->head = NULL;
     snake->size = 0;
-
-    return;
-
-}
-
-void snake_print(struct snake* snake) {
-
-    if (snake == NULL) return;
-
-    struct snake_node* curr = snake->head;
-
-    while (curr != NULL) {
-        printf("(%d, %d) -> ", curr->x, curr->y);
-        curr = curr->next;
-    }
-    
-    printf("NULL\n");
 
     return;
 

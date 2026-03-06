@@ -15,16 +15,16 @@ typedef struct input {
 /*
 Initializes input class values to zero.
 */
-input input_create();
+void input_create(input *input);
 
 /*
 Called in game_run() loop to check/update user inputs.
 */
-void input_read(input* input, int* running);
+void input_read(input *input, int *running);
 
 /*
 Helper function for checking which key stroke was pressed and updating the struct.
 */
-void _input_keydown(input* input, SDL_Event* event, int* running);
+void _input_keydown(input *input, SDL_Event *event, int *running);
 
 #endif

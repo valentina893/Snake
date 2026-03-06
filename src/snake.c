@@ -7,7 +7,7 @@
 
 node *node_create(int x, int y, node *next) {
 
-    node *node = (struct node*)malloc(sizeof(node));
+    struct node *node = (struct node*)malloc(sizeof(struct node));
 
     node->x = x;
     node->y = y;

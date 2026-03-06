@@ -43,9 +43,4 @@ Cleans dynamically allocated memory in snake entity.
 */
 void snake_delete(snake *snake);
 
-/*
-Displays the snake entity for debugging purposes.
-*/
-void snake_print(snake *snake);
-
 #endif

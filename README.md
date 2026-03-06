@@ -1,20 +1,3 @@
-# Snake :snake::video_game:
+# Snake multiple_apples branch
 
-<p align="center">
-  <img src="assets/demo.gif" width="600"/>
-</p>
-
-Controls:
-- WASD/Arrow Keys: Changing direction of the snake.
-- R: Restarts the game.
-- ESC: Quits from the game.
-
-SDL2 is a required dependency.
-
-For mac/linux systems, compile and run with: 
-```
-make
-./snake
-```
-
-New features to be added can be found in the [todo](/docs/todo.md) document.
+This branch is for adding more than one apple to be present in the game.

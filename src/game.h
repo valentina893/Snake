@@ -13,10 +13,9 @@ Game engine class
 */
 typedef struct game {
 
-    snake snake;
-
     input *input;
     renderer *renderer;
+    snake *snake;
 
     int running;
     int paused;

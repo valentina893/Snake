@@ -61,7 +61,7 @@ void game_delete(game *game) {
 
     if (game == NULL) return;
 
-    snake_delete(&game->snake);
+    snake_delete(game->snake);
     renderer_delete(game->renderer);
     
     free(game);
@@ -74,7 +74,7 @@ void _game_restart(game *game) {
 
     if (game == NULL) return;
 
-    snake_delete(&game->snake);
+    snake_delete(game->snake);
 
     game->snake = snake_create(rand_int(0, game->grid_width - 1), rand_int(0, game->grid_height - 1));
 
@@ -95,7 +95,7 @@ void _game_render_running(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node *curr = game->snake.head;
+    node *curr = game->snake->head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -130,7 +130,7 @@ void _game_render_lose(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node *curr = game->snake.head;
+    node *curr = game->snake->head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -165,7 +165,7 @@ void _game_render_win(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node *curr = game->snake.head;
+    node *curr = game->snake->head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -207,8 +207,8 @@ void _game_spawn_apple(game *game) {
 
     if (game == NULL) return;
 
-    int x_size = (game->grid_width * game->grid_height) - game->snake.size;
-    int y_size = (game->grid_width * game->grid_height) - game->snake.size;
+    int x_size = (game->grid_width * game->grid_height) - game->snake->size;
+    int y_size = (game->grid_width * game->grid_height) - game->snake->size;
 
     if (x_size == 0 || y_size == 0) {
         game->apple_x = -1;
@@ -224,7 +224,7 @@ void _game_spawn_apple(game *game) {
     for (int r = 0; r < game->grid_width; r++) {
         for (int c = 0; c < game->grid_height; c++) {
             int snake_contains = 0;
-            node *curr = game->snake.head;
+            node *curr = game->snake->head;
             while (curr != NULL) {
                 if (r == curr->x && c == curr->y) {
                     snake_contains = 1;
@@ -254,30 +254,30 @@ int _game_check_collisions(game *game) {
 
     if (game == NULL) return 1;
 
-    if (game->snake.head->x >= game->grid_width || game->snake.head->x < 0) {
+    if (game->snake->head->x >= game->grid_width || game->snake->head->x < 0) {
         game->paused = 1;
         return 1;
     }
-    if (game->snake.head->y >= game->grid_height || game->snake.head->y < 0) {
+    if (game->snake->head->y >= game->grid_height || game->snake->head->y < 0) {
         game->paused = 1;
         return 1;
     }
 
-    node *curr = game->snake.head->next;
+    node *curr = game->snake->head->next;
 
     while (curr != NULL) {
-        if (game->snake.head->x == curr->x && game->snake.head->y == curr->y) {
+        if (game->snake->head->x == curr->x && game->snake->head->y == curr->y) {
             game->paused = 1;
             return 1;
         }
         curr = curr->next;
     }
 
-    if (game->snake.head->x == game->apple_x && game->snake.head->y == game->apple_y) {
-        snake_move(&game->snake, game->input->dir_x, game->input->dir_y, 1);
+    if (game->snake->head->x == game->apple_x && game->snake->head->y == game->apple_y) {
+        snake_move(game->snake, game->input->dir_x, game->input->dir_y, 1);
         _game_spawn_apple(game);
     } else {
-        snake_move(&game->snake, game->input->dir_x, game->input->dir_y, 0);
+        snake_move(game->snake, game->input->dir_x, game->input->dir_y, 0);
     }
 
     return 0;
@@ -296,7 +296,7 @@ void _game_update(game *game, Uint32 *last_move_time) {
     }
 
     if (now - *last_move_time >= game->move_interval) {
-        if (game->snake.size == game->grid_width * game->grid_height) {
+        if (game->snake->size == game->grid_width * game->grid_height) {
             game->paused = 1;
             _game_paused(game, 0, 1);
         } else if (_game_check_collisions(game)) {

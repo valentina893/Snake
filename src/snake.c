@@ -17,12 +17,12 @@ node *node_create(int x, int y, node *next) {
 
 }
 
-snake snake_create(int x, int y) {
+snake *snake_create(int x, int y) {
 
-    snake snake;
+    snake *snake = (struct snake*)malloc(sizeof(struct snake));
 
-    snake.size = 1;
-    snake.head = node_create(x, y, NULL);
+    snake->size = 1;
+    snake->head = node_create(x, y, NULL);
 
     return snake;
 
@@ -82,6 +82,26 @@ void snake_delete(snake *snake) {
     snake->head = NULL;
     snake->size = 0;
 
+    free(snake);
+
     return;
 
 }
+/*
+void apple_arr_create(apple_arr *apple_arr, int size) {
+
+    apple_arr->data = (struct node*)malloc(sizeof(struct node) * size);
+    apple_arr->size = size;
+
+    for (int i = 0; i < size; i++) {
+        //apple_arr->data[i] = node_create()
+    }
+
+}
+
+void apple_arr_delete(apple_arr *apple_arr) {
+    if (apple_arr != NULL) {
+        free(apple_arr->data);
+    }
+}
+*/

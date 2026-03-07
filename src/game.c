@@ -4,7 +4,7 @@
 
 #include "game.h"
 
-game game_create(
+game *game_create(
     char *window_title,
     int window_width,
     int window_height,
@@ -14,31 +14,28 @@ game game_create(
 ) 
 {
 
-    game game;
+    game *game = (struct game*)malloc(sizeof(struct game));
 
     rand_seed();
-
-    game.input = (struct input*)malloc(sizeof(struct input));
-    game.renderer = (struct renderer*)malloc(sizeof(struct renderer));
     
-    input_create(game.input);
-    renderer_create(game.renderer, window_title, window_width, window_height);
+    game->input = input_create();
+    game->renderer = renderer_create(window_title, window_width, window_height);
 
-    game.snake = snake_create(rand_int(0, grid_width - 1), rand_int(0, grid_height - 1));
+    game->snake = snake_create(rand_int(0, grid_width - 1), rand_int(0, grid_height - 1));
 
-    game.apple_x = rand_int(0, grid_width - 1);
-    game.apple_y = rand_int(0, grid_height - 1);
+    game->apple_x = rand_int(0, grid_width - 1);
+    game->apple_y = rand_int(0, grid_height - 1);
 
-    game.move_interval = move_interval;
+    game->move_interval = move_interval;
 
-    game.window_width = window_width;
-    game.window_height = window_height;
+    game->window_width = window_width;
+    game->window_height = window_height;
 
-    game.grid_width = grid_width;
-    game.grid_height = grid_height;
+    game->grid_width = grid_width;
+    game->grid_height = grid_height;
 
-    game.running = 1;
-    game.paused = 0;
+    game->running = 1;
+    game->paused = 0;
 
     return game;
 
@@ -82,7 +79,7 @@ void _game_restart(game *game) {
     game->apple_x = rand_int(0, game->grid_width - 1);
     game->apple_y = rand_int(0, game->grid_height - 1);
 
-    input_create(game->input);
+    game->input = input_create();
 
     game->paused = 0;
 
@@ -96,7 +93,7 @@ void _game_render_running(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node* curr = game->snake.head;
+    node *curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -131,7 +128,7 @@ void _game_render_lose(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node* curr = game->snake.head;
+    node *curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -166,7 +163,7 @@ void _game_render_win(game *game) {
 
     renderer_clear(game->renderer, 0, 0, 0, 0);
 
-    node* curr = game->snake.head;
+    node *curr = game->snake.head;
 
     while (curr != NULL) {
         renderer_drawRect(
@@ -217,15 +214,15 @@ void _game_spawn_apple(game *game) {
         return;
     }
 
-    int* x_coords = (int*)malloc(sizeof(int) * x_size);
-    int* y_coords = (int*)malloc(sizeof(int) * y_size);
+    int *x_coords = (int*)malloc(sizeof(int) * x_size);
+    int *y_coords = (int*)malloc(sizeof(int) * y_size);
 
     int i = 0;
 
     for (int r = 0; r < game->grid_width; r++) {
         for (int c = 0; c < game->grid_height; c++) {
             int snake_contains = 0;
-            node* curr = game->snake.head;
+            node *curr = game->snake.head;
             while (curr != NULL) {
                 if (r == curr->x && c == curr->y) {
                     snake_contains = 1;
@@ -264,7 +261,7 @@ int _game_check_collisions(game *game) {
         return 1;
     }
 
-    node* curr = game->snake.head->next;
+    node *curr = game->snake.head->next;
 
     while (curr != NULL) {
         if (game->snake.head->x == curr->x && game->snake.head->y == curr->y) {

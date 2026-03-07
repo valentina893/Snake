@@ -33,7 +33,7 @@ typedef struct game {
 /*
 Initializes game engine class, called at the start of main.
 */
-game game_create(
+game *game_create(
     char *window_title,
     int window_width,
     int window_height,

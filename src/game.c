@@ -63,6 +63,8 @@ void game_delete(game *game) {
 
     snake_delete(&game->snake);
     renderer_delete(game->renderer);
+    
+    free(game);
 
     return;
 

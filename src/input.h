@@ -15,7 +15,7 @@ typedef struct input {
 /*
 Initializes input class values to zero.
 */
-void input_create(input *input);
+input *input_create();
 
 /*
 Called in game_run() loop to check/update user inputs.
@@ -26,5 +26,10 @@ void input_read(input *input, int *running);
 Helper function for checking which key stroke was pressed and updating the struct.
 */
 void _input_keydown(input *input, SDL_Event *event, int *running);
+
+/*
+Frees dynamically allocated input class.
+*/
+void input_delete(input *input);
 
 #endif

@@ -2,8 +2,10 @@
 
 #include "input.h"
 
-void input_create(input *input) {
+input *input_create() {
+    input *input = (struct input*)malloc(sizeof(struct input));
     *input = (struct input){1, 0, 0};
+    return input;
 }
 
 void input_read(input *input, int *running) {
@@ -62,6 +64,13 @@ void _input_keydown(input *input, SDL_Event *event, int *running) {
             break;
     }
 
+    return;
+
+}
+
+void input_delete(input *input) {
+
+    if (input != NULL) free(input);
     return;
 
 }

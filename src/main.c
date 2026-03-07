@@ -11,8 +11,8 @@
 #define MOVE_INTERVAL 200
 
 int main() {
-    game game = game_create("Snake", WINDOW_WIDTH, WINDOW_HEIGHT, GRID_WIDTH, GRID_HEIGHT, MOVE_INTERVAL);
-    game_run(&game);
-    game_delete(&game);
+    game *game = game_create("Snake", WINDOW_WIDTH, WINDOW_HEIGHT, GRID_WIDTH, GRID_HEIGHT, MOVE_INTERVAL);
+    game_run(game);
+    game_delete(game);
     return 0;
 }

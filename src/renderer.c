@@ -4,24 +4,27 @@
 
 #include "renderer.h"
 
-int renderer_create(renderer* renderer, char* window_title, int window_width, int window_height) {
+renderer *renderer_create(char *window_title, int window_width, int window_height) {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
-        return 0;
+        return NULL;
     }
+
+    renderer *renderer = (struct renderer*)malloc(sizeof(struct renderer));
 
     renderer->window = SDL_CreateWindow(
         window_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         window_width, window_height, SDL_WINDOW_SHOWN
     );
 
-    SDL_RaiseWindow(renderer->window); // for mac
+    SDL_RaiseWindow(renderer->window);
 
     if (renderer->window == NULL) {
         printf("Error creating SDL_Window*: %s\n", SDL_GetError());
+        free(renderer);
         SDL_Quit();
-        return 0;
+        return NULL;
     }
 
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -30,23 +33,24 @@ int renderer_create(renderer* renderer, char* window_title, int window_width, in
 
     if (renderer->_renderer == NULL) {
         printf("Error creating SDL_Renderer*: %s\n", SDL_GetError());
+        free(renderer);
         SDL_DestroyWindow(renderer->window);
         SDL_Quit();
-        return 0;
+        return NULL;
     }
 
-    return 1;
+    return renderer;
 
 }
 
-void renderer_clear(renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void renderer_clear(renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     SDL_SetRenderDrawColor(renderer->_renderer, r, g, b, a);
     SDL_RenderClear(renderer->_renderer);
 
 }
 
-void renderer_drawTexture(renderer* renderer, SDL_Texture* texture, int x_pos, int y_pos, int w, int h) {
+void renderer_drawTexture(renderer *renderer, SDL_Texture *texture, int x_pos, int y_pos, int w, int h) {
 
     if (texture == NULL || renderer == NULL) return;
 
@@ -58,7 +62,7 @@ void renderer_drawTexture(renderer* renderer, SDL_Texture* texture, int x_pos, i
 
 }
 
-void renderer_drawRect(renderer* renderer, int x_pos, int y_pos, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void renderer_drawRect(renderer *renderer, int x_pos, int y_pos, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     if (renderer == NULL) return;
 
@@ -71,7 +75,7 @@ void renderer_drawRect(renderer* renderer, int x_pos, int y_pos, int w, int h, U
 
 }
 
-void renderer_drawHollowCircle(renderer* renderer, int x_pos, int y_pos, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void renderer_drawHollowCircle(renderer *renderer, int x_pos, int y_pos, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     SDL_SetRenderDrawColor(renderer->_renderer, r, g, b, a);
 
@@ -105,7 +109,7 @@ void renderer_drawHollowCircle(renderer* renderer, int x_pos, int y_pos, int rad
 
 }
 
-void renderer_drawFilledCircle(renderer* renderer, int x_pos, int y_pos, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void renderer_drawFilledCircle(renderer *renderer, int x_pos, int y_pos, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
     SDL_SetRenderDrawColor(renderer->_renderer, r, g, b, a);
 
@@ -119,11 +123,11 @@ void renderer_drawFilledCircle(renderer* renderer, int x_pos, int y_pos, int rad
 
 }
 
-void renderer_present(renderer* renderer) {
+void renderer_present(renderer *renderer) {
     SDL_RenderPresent(renderer->_renderer);
 }
 
-void renderer_delete(renderer* renderer) {
+void renderer_delete(renderer *renderer) {
 
     if (renderer == NULL) return;
 

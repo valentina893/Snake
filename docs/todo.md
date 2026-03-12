@@ -1,3 +1,0 @@
-# TODO List
-
-Create a mode where multiple apples are available to be eaten...
